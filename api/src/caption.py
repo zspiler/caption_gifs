@@ -1,3 +1,4 @@
+from fileinput import filename
 from PIL import Image, ImageDraw, ImageSequence, ImageFont
 import io
 import os
@@ -5,7 +6,8 @@ import textwrap
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def get_background_height(text, width, height, padding,font):
+
+def get_background_height(text, width, height, padding, font):
     d = ImageDraw.Draw(Image.new('RGB', (width, height)))
     current_h = padding
     for line in text:
@@ -16,13 +18,16 @@ def get_background_height(text, width, height, padding,font):
 
 
 # TODO: transparent weird?
-def caption_gif(text, file_name, padding=15):
-    im = Image.open(f'{PROJECT_DIR}/{file_name}')
+def caption_gif(text, file_path, out_path, padding=15):
+
+    im = Image.open(file_path)
     width, height = im.size
     fontsize = int(height / 10)
-    font = ImageFont.truetype(f'{PROJECT_DIR}/fonts/LimerickSerial Xbold.ttf', size=fontsize)
+    font = ImageFont.truetype(
+        f'{PROJECT_DIR}/fonts/LimerickSerial Xbold.ttf', size=fontsize)
     text = textwrap.wrap(text, width=15)
-    background_height = get_background_height(text, width, height, padding, font)
+    background_height = get_background_height(
+        text, width, height, padding, font)
 
     frames = []
     for frame in ImageSequence.Iterator(im):
@@ -32,7 +37,8 @@ def caption_gif(text, file_name, padding=15):
 
         base_width, base_height = frame.size
 
-        background = Image.new('RGBA', (base_width, base_height + background_height), (255, 255, 255, 146))
+        background = Image.new(
+            'RGBA', (base_width, base_height + background_height), (255, 255, 255, 146))
 
         d = ImageDraw.Draw(background)
 
@@ -49,7 +55,7 @@ def caption_gif(text, file_name, padding=15):
 
         frames.append(background)
 
-    frames[0].save(f'{PROJECT_DIR}/out.gif', save_all=True, append_images=frames[1:])
+    frames[0].save(out_path, save_all=True, append_images=frames[1:])
 
 
-caption_gif('sus', 'gifs/Rotating_earth_(large).gif')
+# caption_gif('sus', 'gifs/Rotating_earth_(large).gif')
