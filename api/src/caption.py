@@ -53,5 +53,3 @@ def caption_gif(text, file_name, padding=15):
 
 
 caption_gif('sus', 'gifs/Rotating_earth_(large).gif')
-
-print('cool!')
