@@ -18,9 +18,9 @@ def get_background_height(text, width, height, padding, font):
 
 
 # TODO: transparent weird?
-def caption_gif(text, file_path, out_path, padding=15):
+def caption_gif(text, file_in, file_out, padding=15):
 
-    im = Image.open(file_path)
+    im = Image.open(file_in)
     width, height = im.size
     fontsize = int(height / 10)
     font = ImageFont.truetype(
@@ -55,7 +55,7 @@ def caption_gif(text, file_path, out_path, padding=15):
 
         frames.append(background)
 
-    frames[0].save(out_path, save_all=True, append_images=frames[1:])
+    frames[0].save(file_out, save_all=True, append_images=frames[1:])
 
 
 # caption_gif('sus', 'gifs/Rotating_earth_(large).gif')

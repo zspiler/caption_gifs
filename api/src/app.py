@@ -4,7 +4,11 @@ from werkzeug.utils import secure_filename
 import os
 import random
 import string
+from time import time
 from pathlib import Path
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+
 from caption import caption_gif
 
 
@@ -35,8 +39,9 @@ def upload_gif():
 
         if file and valid_file(file.filename):
             filename = secure_filename(file.filename)
+            filename = generate_random_filename(filename)
             filepath = os.path.join(
-                app.config['UPLOAD_DIR'], generate_random_filename(filename))
+                app.config['UPLOAD_DIR'], filename)
             file.save(filepath)
             return {'filename': filename}
 
@@ -60,14 +65,27 @@ def get_caption():
     if not Path(filepath).is_file():
         return 'File not found', 404
 
-    out = os.path.join(app.config['CAPTIONS_DIR'], filename)
+    output_path = os.path.join(app.config['CAPTIONS_DIR'], filename)
 
     try:
-        caption_gif(text, filepath, out)
+        caption_gif(text, filepath, output_path)
+        os.remove(filepath)
     except:
         return 'Server Error', 500
     return {'filename': filename}
 
+
+def remove_old_gifs():
+    directory = app.config['CAPTIONS_DIR']
+    for filename in os.listdir(directory):
+        file = os.path.join(directory, filename)
+        if os.path.isfile(file):
+            os.remove(file)
+
+
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(remove_old_gifs, 'cron', hour=8)
+sched.start()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
