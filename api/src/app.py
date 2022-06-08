@@ -29,7 +29,8 @@ def generate_random_filename(filename):
     return f"{filename.split('.')[0]}_{random_str}.gif"
 
 
-@app.route('/', methods=['POST'])
+@app.route('/upload', methods=['POST'])
+@cross_origin()
 def upload_gif():
     if request.method == 'POST':
         if 'file' not in request.files or request.files['file'] == '':
@@ -48,11 +49,15 @@ def upload_gif():
     return 'Not found', 404
 
 
-@app.route('/', methods=['GET'])
+@app.route('/caption', methods=['POST'])
+@cross_origin()
 def get_caption():
-
-    if request.json == None or 'filename' not in request.json or 'text' not in request.json:
+    print('ASDUIASD(D U()ASDASD *SD*')
+    print(request.headers)
+    if request.json == None or 'filename' not in request.json or 'text' not in request.json or len(request.json['text']) == 0:
         return "Bad request", 400
+
+    print('?????')
 
     filename = request.json['filename']
     text = request.json['text']
@@ -69,8 +74,10 @@ def get_caption():
 
     try:
         caption_gif(text, filepath, output_path)
+        print('caption successful')
         os.remove(filepath)
     except:
+        print('???')
         return 'Server Error', 500
     return {'filename': filename}
 
