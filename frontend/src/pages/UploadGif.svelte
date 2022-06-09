@@ -6,6 +6,7 @@
 
 	import axios from "axios";
 	import LoadingAnimation from "../components/LoadingAnimation.svelte";
+	import Heading from "../components/Heading.svelte";
 
 	let selectedFiles = [];
 	let gif;
@@ -72,7 +73,7 @@
 </script>
 
 <main>
-	<h1>Caption GIFs</h1>
+	<Heading />
 
 	<form on:submit|preventDefault={() => {}}>
 		<input
@@ -110,6 +111,10 @@
 		margin-left: auto;
 
 		margin: 0 auto 5% auto;
+	}
+
+	img {
+		height: 10%;
 	}
 
 	h1 {

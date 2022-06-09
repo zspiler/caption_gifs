@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw, ImageSequence, ImageFont
 import io
 import os
 import textwrap
+from transparent_gif_converter import save_transparent_gif
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,9 +18,10 @@ def get_background_height(text, width, height, padding, font):
     return current_h
 
 
-def caption_gif(text, file_in, file_out, padding=15):
+def caption_gif(text, file_in, file_out, padding=30):
 
     gif = Image.open(file_in)
+
     width, height = gif.size
     fontsize = int(height / 10)
     font = ImageFont.truetype(
@@ -53,5 +55,9 @@ def caption_gif(text, file_in, file_out, padding=15):
 
         frames.append(background)
 
-    frames[0].save(file_out, save_all=True,
-                   append_images=frames[1:], loop=0, optimize=False, duration=gif.info['duration'])
+    if gif.mode == "RGBA" or "transparency" in gif.info:
+        durations = [gif.info['duration'] for _ in range(len(frames))]
+        save_transparent_gif(frames[1:], durations, file_out)
+    else:
+        frames[0].save(file_out, save_all=True, append_images=frames[1:],
+                       loop=0, duration=gif.info['duration'])

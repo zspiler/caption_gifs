@@ -5,6 +5,7 @@
 
 	import axios from "axios";
 	import LoadingAnimation from "../components/LoadingAnimation.svelte";
+	import Heading from "../components/Heading.svelte";
 
 	export let params = {};
 
@@ -23,8 +24,7 @@
 </script>
 
 <main>
-	<h1>Your Captioned GIF</h1>
-
+	<Heading />
 	{#if !loading}
 		{#if gifFile}
 			<div class="gif" in:fade>
@@ -37,7 +37,7 @@
 			<br />
 			<button>Download</button>
 			<br />
-			<button on:click={() => push("/")}>Upload Another GIF</button>
+			<button on:click={() => push("/")}>Upload another GIF</button>
 		{:else}
 			<div class="center">
 				<h3>Cannot find GIF '{params.filename}'.</h3>
@@ -60,13 +60,6 @@
 		max-width: 240px;
 		margin-left: auto;
 		margin: 0 auto 5% auto;
-	}
-
-	h1 {
-		color: white;
-
-		font-size: 5em;
-		font-weight: 100;
 	}
 
 	.center {
