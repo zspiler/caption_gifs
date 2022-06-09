@@ -11,8 +11,8 @@
 	let selectedFiles = [];
 	let gif;
 	let caption = "";
-	let speedup = false;
-
+	let speedupChecked = false;
+	let darkBackgroundChecked = false;
 	let loading;
 
 	function onFileSelected(e) {
@@ -56,7 +56,8 @@
 				{
 					filename,
 					text: caption,
-					speedup: true,
+					speedup: speedupChecked,
+					dark: darkBackgroundChecked,
 				},
 				{ filename, text: caption },
 				{
@@ -95,7 +96,10 @@
 		<input bind:value={caption} />
 
 		<p>Speed up GIF</p>
-		<input type="checkbox" bind:checked={speedup} />
+		<input type="checkbox" bind:checked={speedupChecked} />
+
+		<p>Dark background</p>
+		<input type="checkbox" bind:checked={darkBackgroundChecked} />
 
 		<br />
 		<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}

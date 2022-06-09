@@ -18,9 +18,13 @@ def get_background_height(text, width, height, padding, font):
     return current_h
 
 
-def caption_gif(text, file_in, file_out, padding=30, speedup=False):
+def caption_gif(text, file_in, file_out, padding=30, speedup=False, dark_background=False):
 
     gif = Image.open(file_in)
+
+    background_color = (0, 0, 0, 255) if dark_background else (
+        255, 255, 255, 255)
+    text_color = (255, 255, 255, 255) if dark_background else (0, 0, 0, 255)
 
     width, height = gif.size
     fontsize = int(height / 10)
@@ -39,14 +43,15 @@ def caption_gif(text, file_in, file_out, padding=30, speedup=False):
         base_width, base_height = frame.size
 
         background = Image.new(
-            'RGBA', (base_width, base_height + background_height), (255, 255, 255, 146))
+            'RGBA', (base_width, base_height + background_height), background_color)
 
         d = ImageDraw.Draw(background)
 
         current_h = padding
         for line in text:
             w, h = d.textsize(line, font=font)
-            d.text(((width - w) / 2, current_h), line, font=font, fill='black')
+            d.text(((width - w) / 2, current_h),
+                   line, font=font, fill=text_color)
             current_h += h + padding
         del d
 
