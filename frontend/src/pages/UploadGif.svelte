@@ -31,7 +31,6 @@
 				},
 			});
 			const filename = res.data.filename;
-			console.log(filename);
 			res = await axios.post(
 				"API_URL/caption",
 				{
@@ -48,7 +47,8 @@
 			loading = false;
 			replace(`/result/${res.data.filename}`);
 		} catch (error) {
-			console.log(error);
+			loading = false;
+			alert("Server error :(");
 		}
 	}
 </script>

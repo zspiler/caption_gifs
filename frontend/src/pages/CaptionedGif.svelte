@@ -9,7 +9,7 @@
 	<h1>Your Captioned GIF</h1>
 
 	<div class="gif">
-		<img src={`API_URL/captioned/${params.filename}`} alt="Captioned GIF" />
+		<img src={`API_URL/captioned/${params.filename}`} loop="infinite" alt="Captioned GIF" />
 	</div>
 
 	<button>Download</button>

@@ -2,7 +2,7 @@
 import os
 import random
 import string
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, send_file
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from time import time
@@ -72,7 +72,9 @@ def get_captioned_gif():
     try:
         caption_gif(text, filepath, output_path)
         os.remove(filepath)
-    except:
+
+    except Exception as e:
+        print(e)
         return 'Server Error', 500
     return {'filename': filename}
 

@@ -17,11 +17,10 @@ def get_background_height(text, width, height, padding, font):
     return current_h
 
 
-# TODO: transparent weird?
 def caption_gif(text, file_in, file_out, padding=15):
 
-    im = Image.open(file_in)
-    width, height = im.size
+    gif = Image.open(file_in)
+    width, height = gif.size
     fontsize = int(height / 10)
     font = ImageFont.truetype(
         f'{PROJECT_DIR}/fonts/LimerickSerial Xbold.ttf', size=fontsize)
@@ -30,7 +29,7 @@ def caption_gif(text, file_in, file_out, padding=15):
         text, width, height, padding, font)
 
     frames = []
-    for frame in ImageSequence.Iterator(im):
+    for frame in ImageSequence.Iterator(gif):
         b = io.BytesIO()
         frame.save(b, format="GIF")
         frame = Image.open(b)
@@ -42,7 +41,6 @@ def caption_gif(text, file_in, file_out, padding=15):
 
         d = ImageDraw.Draw(background)
 
-        # draw text (centered)
         current_h = padding
         for line in text:
             w, h = d.textsize(line, font=font)
@@ -55,7 +53,5 @@ def caption_gif(text, file_in, file_out, padding=15):
 
         frames.append(background)
 
-    frames[0].save(file_out, save_all=True, append_images=frames[1:])
-
-
-# caption_gif('sus', 'gifs/Rotating_earth_(large).gif')
+    frames[0].save(file_out, save_all=True,
+                   append_images=frames[1:], loop=0, optimize=False, duration=gif.info['duration'])
