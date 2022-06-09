@@ -35,7 +35,10 @@
 				/>
 			</div>
 			<br />
-			<button>Download</button>
+
+			<button on:click={() => window.open(`API_URL/captioned/${params.filename}`, "Download")}
+				>Download</button
+			>
 			<br />
 			<button on:click={() => push("/")}>Upload another GIF</button>
 		{:else}
@@ -73,6 +76,7 @@
 		top: 50%;
 		width: 100%;
 	}
+
 	h3 {
 		color: rgb(77, 77, 77);
 		font-weight: 100;
