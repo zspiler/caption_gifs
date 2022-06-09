@@ -72,3 +72,13 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+.loader {
+	position: fixed;
+	left: 50%;
+	right: auto;
+	top: 50%;
+	z-index: 100;
+	margin-top: -30px;
+	margin-left: -30px;
+}

@@ -1,9 +1,10 @@
-from flask import Flask, request
-from flask_cors import CORS, cross_origin
-from werkzeug.utils import secure_filename
+
 import os
 import random
 import string
+from flask import Flask, request
+from flask_cors import CORS, cross_origin
+from werkzeug.utils import secure_filename
 from time import time
 from pathlib import Path
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -52,12 +53,9 @@ def upload_gif():
 @app.route('/caption', methods=['POST'])
 @cross_origin()
 def get_caption():
-    print('ASDUIASD(D U()ASDASD *SD*')
-    print(request.headers)
+
     if request.json == None or 'filename' not in request.json or 'text' not in request.json or len(request.json['text']) == 0:
         return "Bad request", 400
-
-    print('?????')
 
     filename = request.json['filename']
     text = request.json['text']
@@ -74,10 +72,8 @@ def get_caption():
 
     try:
         caption_gif(text, filepath, output_path)
-        print('caption successful')
         os.remove(filepath)
     except:
-        print('???')
         return 'Server Error', 500
     return {'filename': filename}
 

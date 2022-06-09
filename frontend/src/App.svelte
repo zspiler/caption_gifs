@@ -1,9 +1,11 @@
 <script>
 	import axios from "axios";
+	import LoadingAnimation from "./components/LoadingAnimation.svelte";
 
 	let selectedFiles;
 	let gif;
 	let caption;
+	let loading;
 
 	function onFileSelected(e) {
 		let image = e.target.files[0];
@@ -16,6 +18,8 @@
 
 	async function submit() {
 		// TODO: validate file selected, text not
+
+		loading = true;
 		var formData = new FormData();
 		formData.append("file", selectedFiles[0]);
 
@@ -40,7 +44,10 @@
 					},
 				}
 			);
-		} catch (error) {}
+			loading = false;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 </script>
 
@@ -64,6 +71,10 @@
 	<input bind:value={caption} />
 
 	<button on:click={submit}>Submit </button>
+
+	{#if loading}
+		<LoadingAnimation />
+	{/if}
 </main>
 
 <style>
