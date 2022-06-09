@@ -1,9 +1,11 @@
 <script>
+	import { toast } from "@zerodevx/svelte-toast";
+	import { fade } from "svelte/transition";
+
+	import { push } from "svelte-spa-router";
+
 	import axios from "axios";
 	import LoadingAnimation from "../components/LoadingAnimation.svelte";
-
-	import { toast } from "@zerodevx/svelte-toast";
-	import { replace } from "svelte-spa-router";
 
 	let selectedFiles = [];
 	let gif;
@@ -61,7 +63,7 @@
 				}
 			);
 			loading = false;
-			replace(`/result/${res.data.filename}`);
+			push(`/result/${res.data.filename}`);
 		} catch (error) {
 			loading = false;
 			toast.push("Server error", { classes: ["warn"] });
@@ -72,26 +74,28 @@
 <main>
 	<h1>Caption GIFs</h1>
 
-	<input
-		type="file"
-		bind:files={selectedFiles}
-		accept=".gif"
-		on:change={(e) => onFileSelected(e)}
-	/>
+	<form on:submit|preventDefault={() => {}}>
+		<input
+			type="file"
+			bind:files={selectedFiles}
+			accept=".gif"
+			on:change={(e) => onFileSelected(e)}
+		/>
 
-	{#if gif}
-		<div class="gif">
-			<img src={gif} alt="Selected GIF" />
-		</div>
-	{/if}
+		{#if gif}
+			<div class="gif" in:fade>
+				<img src={gif} alt="Selected GIF" />
+			</div>
+		{/if}
 
-	<p>Enter caption:</p>
-	<input bind:value={caption} />
+		<p>Enter caption:</p>
+		<input bind:value={caption} />
 
-	<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
-		>Submit
-	</button>
-
+		<br />
+		<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
+			>Submit
+		</button>
+	</form>
 	{#if loading}
 		<LoadingAnimation />
 	{/if}

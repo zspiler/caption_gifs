@@ -9,6 +9,5 @@
 		colorCenter="rgba(70, 20, 141, 0.7550419997100402)"
 		colorInner="rgba(0, 211, 255, 0.7082632882254464)"
 		unit="px"
-		duration="1s"
 	/>
 </div>
