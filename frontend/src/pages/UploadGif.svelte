@@ -1,6 +1,7 @@
 <script>
 	import axios from "axios";
 	import LoadingAnimation from "../components/LoadingAnimation.svelte";
+	import { replace } from "svelte-spa-router";
 
 	let selectedFiles;
 	let gif;
@@ -45,6 +46,7 @@
 				}
 			);
 			loading = false;
+			replace(`/result/${res.data.filename}`);
 		} catch (error) {
 			console.log(error);
 		}

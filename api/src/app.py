@@ -2,7 +2,7 @@
 import os
 import random
 import string
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from time import time
@@ -52,8 +52,7 @@ def upload_gif():
 
 @app.route('/caption', methods=['POST'])
 @cross_origin()
-def get_caption():
-
+def get_captioned_gif():
     if request.json == None or 'filename' not in request.json or 'text' not in request.json or len(request.json['text']) == 0:
         return "Bad request", 400
 
@@ -76,6 +75,11 @@ def get_caption():
     except:
         return 'Server Error', 500
     return {'filename': filename}
+
+
+@app.route('/captioned/<filename>')
+def serve_captioned_gifs(filename):
+    return send_from_directory(app.config['CAPTIONS_DIR'], filename)
 
 
 def remove_old_gifs():
