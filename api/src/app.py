@@ -18,6 +18,7 @@ CORS(app, support_credentials=True)
 
 app.config['UPLOAD_DIR'] = './gifs/uploaded'
 app.config['CAPTIONS_DIR'] = './gifs/captioned'
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # 20 MB file size limit
 
 
 def valid_file(filename):

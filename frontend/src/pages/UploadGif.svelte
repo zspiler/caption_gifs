@@ -1,11 +1,14 @@
 <script>
 	import axios from "axios";
 	import LoadingAnimation from "../components/LoadingAnimation.svelte";
+
+	import { toast } from "@zerodevx/svelte-toast";
 	import { replace } from "svelte-spa-router";
 
-	let selectedFiles;
+	let selectedFiles = [];
 	let gif;
-	let caption;
+	let caption = "";
+
 	let loading;
 
 	function onFileSelected(e) {
@@ -18,7 +21,20 @@
 	}
 
 	async function submit() {
-		// TODO: validate file selected, text not
+		if (selectedFiles.length === 0) {
+			return toast.push("Please select a GIF", { classes: ["info"] });
+		}
+		const fileSize = selectedFiles[0].size / 1000000;
+		if (fileSize > 20) {
+			return toast.push(
+				"Selected GIF exceeds 20 MB size limit. Please select a different GIF",
+				{ classes: ["info"] }
+			);
+		}
+
+		if (caption.length === 0) {
+			return toast.push("Please enter some text for the caption", { classes: ["info"] });
+		}
 
 		loading = true;
 		var formData = new FormData();
@@ -48,7 +64,7 @@
 			replace(`/result/${res.data.filename}`);
 		} catch (error) {
 			loading = false;
-			alert("Server error :(");
+			toast.push("Server error", { classes: ["warn"] });
 		}
 	}
 </script>
@@ -72,7 +88,9 @@
 	<p>Enter caption:</p>
 	<input bind:value={caption} />
 
-	<button on:click={submit}>Submit </button>
+	<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
+		>Submit
+	</button>
 
 	{#if loading}
 		<LoadingAnimation />
