@@ -11,6 +11,7 @@
 	let selectedFiles = [];
 	let gif;
 	let caption = "";
+	let speedup = false;
 
 	let loading;
 
@@ -55,6 +56,7 @@
 				{
 					filename,
 					text: caption,
+					speedup: true,
 				},
 				{ filename, text: caption },
 				{
@@ -92,6 +94,9 @@
 		<p>Enter caption:</p>
 		<input bind:value={caption} />
 
+		<p>Speed up GIF</p>
+		<input type="checkbox" bind:checked={speedup} />
+
 		<br />
 		<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
 			>Submit
@@ -107,9 +112,7 @@
 		text-align: center;
 		padding: 1em;
 		max-width: 240px;
-
 		margin-left: auto;
-
 		margin: 0 auto 5% auto;
 	}
 

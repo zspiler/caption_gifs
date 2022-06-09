@@ -18,7 +18,7 @@ def get_background_height(text, width, height, padding, font):
     return current_h
 
 
-def caption_gif(text, file_in, file_out, padding=30):
+def caption_gif(text, file_in, file_out, padding=30, speedup=False):
 
     gif = Image.open(file_in)
 
@@ -55,9 +55,13 @@ def caption_gif(text, file_in, file_out, padding=30):
 
         frames.append(background)
 
+    duration = gif.info['duration'] / 2 if speedup else gif.info['duration']
+
     if gif.mode == "RGBA" or "transparency" in gif.info:
-        durations = [gif.info['duration'] for _ in range(len(frames))]
+        durations = [duration for _ in range(len(frames))]
         save_transparent_gif(frames[1:], durations, file_out)
-    else:
-        frames[0].save(file_out, save_all=True, append_images=frames[1:],
-                       loop=0, duration=gif.info['duration'])
+        return
+
+    print('DURATION:', gif.info['duration']/1)
+    frames[0].save(file_out, save_all=True,
+                   append_images=frames[1:], loop=0, duration=duration)

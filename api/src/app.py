@@ -54,11 +54,19 @@ def upload_gif():
 @app.route('/caption', methods=['POST'])
 @cross_origin()
 def get_captioned_gif():
-    if request.json == None or 'filename' not in request.json or 'text' not in request.json or len(request.json['text']) == 0:
+    if (
+        request.json == None
+        or 'filename' not in request.json
+        or 'text' not in request.json
+        or len(request.json['text']) == 0
+        or 'speedup' not in request.json
+        or request.json['speedup'] not in (True, False)
+    ):
         return "Bad request", 400
 
     filename = request.json['filename']
     text = request.json['text']
+    speedup = request.json['speedup']
 
     if not valid_file(filename):
         return 'Invalid filename', 400
@@ -71,7 +79,7 @@ def get_captioned_gif():
     output_path = os.path.join(app.config['CAPTIONS_DIR'], filename)
 
     try:
-        caption_gif(text, filepath, output_path)
+        caption_gif(text, filepath, output_path, speedup=speedup)
         os.remove(filepath)
 
     except Exception as e:
