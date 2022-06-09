@@ -76,6 +76,9 @@
 		top: 50%;
 		width: 100%;
 	}
+	.gif {
+		margin-top: 5%;
+	}
 
 	h3 {
 		color: rgb(77, 77, 77);

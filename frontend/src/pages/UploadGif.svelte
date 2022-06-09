@@ -79,6 +79,7 @@
 	<Heading />
 
 	<form on:submit|preventDefault={() => {}}>
+		<p>Select GIF</p>
 		<input
 			type="file"
 			bind:files={selectedFiles}
@@ -93,7 +94,7 @@
 		{/if}
 
 		<p>Enter caption:</p>
-		<input bind:value={caption} />
+		<input bind:value={caption} size="50" />
 
 		<p>Speed up GIF</p>
 		<input type="checkbox" bind:checked={speedupChecked} />
@@ -101,6 +102,7 @@
 		<p>Dark background</p>
 		<input type="checkbox" bind:checked={darkBackgroundChecked} />
 
+		<br />
 		<br />
 		<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
 			>Submit
@@ -120,15 +122,16 @@
 		margin: 0 auto 5% auto;
 	}
 
-	img {
-		height: 10%;
+	form {
+		margin-top: 5%;
 	}
 
-	h1 {
-		color: white;
+	p {
+		margin-top: 3%;
+	}
 
-		font-size: 5em;
-		font-weight: 100;
+	img {
+		height: 10%;
 	}
 
 	@media (min-width: 640px) {
