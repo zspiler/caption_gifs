@@ -1,9 +1,9 @@
-import UploadGif from "./pages/UploadGif.svelte";
-import CaptionedGif from "./pages/CaptionedGif.svelte";
+import Home from "./pages/Home.svelte";
+import Result from "./pages/Result.svelte";
 import NotFound from "./pages/NotFound.svelte";
 
 export const routes = {
-	"/": UploadGif,
-	"/result/:filename": CaptionedGif,
+	"/": Home,
+	"/result/:filename": Result,
 	"*": NotFound,
 };

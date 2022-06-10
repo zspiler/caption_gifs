@@ -1,5 +1,5 @@
 from fileinput import filename
-from PIL import Image, ImageDraw, ImageSequence, ImageFont
+from PIL import Image, ImageDraw, ImageSequence, ImageFont, ImageChops
 import io
 import os
 import math
@@ -25,7 +25,23 @@ def get_max_line_width(width, font):
     return int(math.ceil(width / max_letter_width))
 
 
-def caption_gif(text, file_in, file_out, padding=5, margin=20, speedup=False, dark_background=False):
+# NOTE: Credit: https://stackoverflow.com/questions/10689512/determining-if-a-gif-is-transparent-in-python
+def gif_uses_transparency(filename):
+    img = Image.open(filename)
+    trans = img.info.get("transparency", None)
+    if trans is not None:
+        trans *= 3  # convert color number to palette table index
+        palette = img.getpalette()
+        imgs = []
+        for bg in [0, 255]:   # map transparent color first to black, then white
+            palette[trans:trans+3] = [bg] * 3
+            img.putpalette(palette)
+            imgs.append(img.convert("L"))
+        return bool(ImageChops.difference(*imgs).getbbox())
+    return False
+
+
+def caption_gif(text, file_in, file_out, speedup=False, dark_background=False):
 
     gif = Image.open(file_in)
 
@@ -34,7 +50,10 @@ def caption_gif(text, file_in, file_out, padding=5, margin=20, speedup=False, da
     text_color = (255, 255, 255, 255) if dark_background else (0, 0, 0, 255)
 
     width, height = gif.size
-    fontsize = int(height / 8)
+    margin = int(math.ceil(height * 0.05))
+    padding = int(math.ceil(height * 0.01))
+
+    fontsize = int(height / 10) if height/10 >= 15 else 15
 
     font = ImageFont.truetype(
         f'{PROJECT_DIR}/fonts/LimerickSerial Xbold.ttf', size=fontsize)
@@ -71,7 +90,7 @@ def caption_gif(text, file_in, file_out, padding=5, margin=20, speedup=False, da
 
     duration = gif.info['duration'] / 2 if speedup else gif.info['duration']
 
-    if gif.mode == "RGBA" or "transparency" in gif.info:
+    if gif_uses_transparency(file_in):
         durations = [duration for _ in range(len(frames))]
         save_transparent_gif(frames[1:], durations, file_out)
         return

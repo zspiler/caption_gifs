@@ -75,68 +75,72 @@
 	}
 </script>
 
-<main>
-	<Heading />
+<Heading />
 
-	<form on:submit|preventDefault={() => {}}>
-		<p>Select GIF</p>
-		<input
-			type="file"
-			bind:files={selectedFiles}
-			accept=".gif"
-			on:change={(e) => onFileSelected(e)}
-		/>
+<form on:submit|preventDefault={() => {}}>
+	<div class={!gif ? "center" : ""}>
+		<section>
+			<p>Select GIF</p>
+			<input
+				type="file"
+				bind:files={selectedFiles}
+				accept=".gif"
+				on:change={(e) => onFileSelected(e)}
+			/>
 
-		{#if gif}
-			<div class="gif" in:fade>
-				<img src={gif} alt="Selected GIF" />
-			</div>
-		{/if}
+			{#if gif}
+				<div class="gif" in:fade|local>
+					<img src={gif} alt="Selected GIF" />
+				</div>
+			{/if}
 
-		<p>Enter caption:</p>
-		<input bind:value={caption} size="50" />
+			<p>Enter caption:</p>
+			<input bind:value={caption} size="50" />
 
-		<p>Speed up GIF</p>
-		<input type="checkbox" bind:checked={speedupChecked} />
+			{#if gif}
+				<section class="options" in:fade|local out:fade|local>
+					<h3>Options</h3>
 
-		<p>Dark background</p>
-		<input type="checkbox" bind:checked={darkBackgroundChecked} />
+					<p>Speed up GIF</p>
+					<input type="checkbox" bind:checked={speedupChecked} />
 
-		<br />
-		<br />
-		<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
-			>Submit
-		</button>
-	</form>
-	{#if loading}
-		<LoadingAnimation />
-	{/if}
-</main>
+					<p>Dark background</p>
+					<input type="checkbox" bind:checked={darkBackgroundChecked} />
+				</section>
+			{/if}
+		</section>
+
+		<section>
+			<button on:click={submit} disabled={caption.length === 0 || selectedFiles.length === 0}
+				>Submit
+			</button>
+		</section>
+	</div>
+</form>
+{#if loading}
+	<LoadingAnimation />
+{/if}
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin-left: auto;
-		margin: 0 auto 5% auto;
+	.center {
+		margin-top: 10%;
+	}
+
+	.gif > img {
+		margin-top: 2%;
+		max-height: 300px;
 	}
 
 	form {
-		margin-top: 5%;
+		margin-top: 2%;
 	}
 
-	p {
+	p,
+	h3 {
 		margin-top: 3%;
 	}
 
-	img {
-		height: 10%;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	button {
+		margin-top: 3%;
 	}
 </style>

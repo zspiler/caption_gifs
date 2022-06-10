@@ -1,6 +1,6 @@
-#####################################################################
-#   Code from https://github.com/python-pillow/Pillow/issues/4644   #
-#####################################################################
+##########################################################################
+#  NOTE: Code from https://github.com/python-pillow/Pillow/issues/4644   #
+##########################################################################
 
 
 # This code adapted from https://github.com/python-pillow/Pillow/issues/4644 to resolve an issue
