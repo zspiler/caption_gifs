@@ -1,3 +1,4 @@
-src/gifs/
+src/gifs/uploaded/*
+src/gifs/captioned/*
 src/fonts/
 __pycache__/

@@ -14,7 +14,7 @@ from caption import caption_gif
 
 
 app = Flask(__name__)
-CORS(app, support_credentials=True)
+CORS(app)
 
 app.config['UPLOAD_DIR'] = './gifs/uploaded'
 app.config['CAPTIONS_DIR'] = './gifs/captioned'
@@ -32,7 +32,6 @@ def generate_random_filename(filename):
 
 
 @app.route('/upload', methods=['POST'])
-@cross_origin()
 def upload_gif():
     if request.method == 'POST':
         if 'file' not in request.files or request.files['file'] == '':
@@ -43,8 +42,10 @@ def upload_gif():
         if file and valid_file(file.filename):
             filename = secure_filename(file.filename)
             filename = generate_random_filename(filename)
+            
             filepath = os.path.join(
                 app.config['UPLOAD_DIR'], filename)
+
             file.save(filepath)
             return {'filename': filename}
 
@@ -52,7 +53,6 @@ def upload_gif():
 
 
 @app.route('/caption', methods=['POST'])
-@cross_origin()
 def get_captioned_gif():
     if (
         request.json == None
