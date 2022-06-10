@@ -69,7 +69,7 @@
 	}
 
 	.gif > img {
-		max-height: 600px;
+		max-width: 80%;
 	}
 
 	h3 {

@@ -94,8 +94,9 @@
 				</div>
 			{/if}
 
-			<p>Enter caption:</p>
-			<input bind:value={caption} size="50" />
+			<p>Enter caption</p>
+
+			<input class="caption-input" bind:value={caption} size="50" />
 
 			{#if gif}
 				<section class="options" in:fade|local out:fade|local>
@@ -122,13 +123,34 @@
 {/if}
 
 <style>
+	.caption-input {
+		width: 35%;
+	}
+
+	@media (max-width: 640px) {
+		.caption-input {
+			width: 100%;
+		}
+	}
+
 	.center {
 		margin-top: 10%;
 	}
 
-	.gif > img {
+	.center p {
+		margin-top: 5%;
+	}
+
+	.center button {
+		margin-top: 5%;
+	}
+
+	.gif {
 		margin-top: 2%;
-		max-height: 300px;
+	}
+
+	.gif > img {
+		max-width: 80%;
 	}
 
 	form {
