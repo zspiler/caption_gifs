@@ -11,7 +11,6 @@
 	let selectedFiles = [];
 	let gif;
 	let caption = "";
-	let speedupChecked = false;
 	let darkBackgroundChecked = false;
 	let loading;
 
@@ -56,7 +55,6 @@
 				{
 					filename,
 					text: caption,
-					speedup: speedupChecked,
 					dark: darkBackgroundChecked,
 				},
 				{ filename, text: caption },
@@ -101,9 +99,6 @@
 			{#if gif}
 				<section class="options" in:fade|local out:fade|local>
 					<h3>Options</h3>
-
-					<p>Speed up GIF</p>
-					<input type="checkbox" bind:checked={speedupChecked} />
 
 					<p>Dark background</p>
 					<input type="checkbox" bind:checked={darkBackgroundChecked} />

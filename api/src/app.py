@@ -59,8 +59,6 @@ def get_captioned_gif():
         or 'filename' not in request.json
         or 'text' not in request.json
         or len(request.json['text']) == 0
-        or 'speedup' not in request.json
-        or request.json['speedup'] not in (True, False)
         or 'dark' not in request.json
         or request.json['dark'] not in (True, False)
     ):
@@ -68,7 +66,6 @@ def get_captioned_gif():
 
     filename = request.json['filename']
     text = request.json['text']
-    speedup = request.json['speedup']
     dark = request.json['dark']
 
     if not valid_file(filename):
@@ -82,8 +79,7 @@ def get_captioned_gif():
     output_path = os.path.join(app.config['CAPTIONS_DIR'], filename)
 
     try:
-        caption_gif(text, filepath, output_path,
-                    speedup=speedup, dark_background=dark)
+        caption_gif(text, filepath, output_path, dark_background=dark)
         os.remove(filepath)
 
     except Exception as e:
