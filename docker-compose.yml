@@ -6,7 +6,9 @@ services:
             - "8080:80"
         depends_on:
             - api
+        restart: always
     api:
         build: api
         ports:
             - "5001:5000"
+        restart: always
