@@ -16,10 +16,12 @@ from caption import caption_gif
 app = Flask(__name__)
 CORS(app)
 
-app.config['UPLOAD_DIR'] = './gifs/uploaded'
-app.config['CAPTIONS_DIR'] = './gifs/captioned'
-app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # 20 MB file size limit
+app.config['UPLOAD_DIR'] = '../gifs/uploaded'
+app.config['CAPTIONS_DIR'] = '../gifs/captioned'
+os.makedirs(app.config['UPLOAD_DIR'], exist_ok=True)
+os.makedirs(app.config['CAPTIONS_DIR'], exist_ok=True)
 
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # 20 MB file size limit
 
 def valid_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'gif'
